@@ -1,0 +1,16 @@
+C:\大学の課題、レポート等\kenkyu\project3\project3\bin\Debug\net8.0-windows\project3.exe
+C:\大学の課題、レポート等\kenkyu\project3\project3\bin\Debug\net8.0-windows\project3.deps.json
+C:\大学の課題、レポート等\kenkyu\project3\project3\bin\Debug\net8.0-windows\project3.runtimeconfig.json
+C:\大学の課題、レポート等\kenkyu\project3\project3\bin\Debug\net8.0-windows\project3.dll
+C:\大学の課題、レポート等\kenkyu\project3\project3\bin\Debug\net8.0-windows\project3.pdb
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.Form1.resources
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.csproj.GenerateResource.cache
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.GeneratedMSBuildEditorConfig.editorconfig
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.AssemblyInfoInputs.cache
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.AssemblyInfo.cs
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.csproj.CoreCompileInputs.cache
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.dll
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\refint\project3.dll
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.pdb
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\project3.genruntimeconfig.cache
+C:\大学の課題、レポート等\kenkyu\project3\project3\obj\Debug\net8.0-windows\ref\project3.dll
