@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnSaveAs = new Button();
             btnSetSize = new Button();
             txtHeight = new TextBox();
             txtWidth = new TextBox();
@@ -46,7 +47,6 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
-            btnSaveAs = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -77,6 +77,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1615, 102);
             panel1.TabIndex = 0;
+            // 
+            // btnSaveAs
+            // 
+            btnSaveAs.Location = new Point(1191, 26);
+            btnSaveAs.Name = "btnSaveAs";
+            btnSaveAs.Size = new Size(205, 52);
+            btnSaveAs.TabIndex = 16;
+            btnSaveAs.Text = "名前を付けて保存";
+            btnSaveAs.UseVisualStyleBackColor = true;
+            btnSaveAs.Click += btnSaveAs_Click;
             // 
             // btnSetSize
             // 
@@ -130,6 +140,7 @@
             btnSave.TabIndex = 10;
             btnSave.Text = "保存";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Visible = false;
             btnSave.Click += button2_Click;
             // 
             // cmbWidth
@@ -237,16 +248,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1615, 375);
             panel2.TabIndex = 2;
-            // 
-            // btnSaveAs
-            // 
-            btnSaveAs.Location = new Point(1385, 27);
-            btnSaveAs.Name = "btnSaveAs";
-            btnSaveAs.Size = new Size(205, 47);
-            btnSaveAs.TabIndex = 16;
-            btnSaveAs.Text = "名前を付けて保存";
-            btnSaveAs.UseVisualStyleBackColor = true;
-            btnSaveAs.Click += btnSaveAs_Click;
             // 
             // Form1
             // 
