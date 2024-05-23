@@ -198,11 +198,20 @@ namespace project3
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            Image img = Bitmap.FromFile("test.png");
-            _bitmap = new Bitmap(img);
-            pic.Image = _bitmap;
-            pic.Width = _bitmap.Width;
-            pic.Height = _bitmap.Height;
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|Bitmap Files|*.bmp|All Files|*.*";
+                openFileDialog.Title = "ファイルを選択してください";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    Image img = Bitmap.FromFile(filePath);
+                    _bitmap = new Bitmap(img);
+                    pic.Image = _bitmap;
+                    pic.Width = _bitmap.Width;
+                    pic.Height = _bitmap.Height;
+                }
+            }
 
         }
 
@@ -228,6 +237,34 @@ namespace project3
             }
             _bitmap = newBitmap;
             pic.Image = _bitmap;
+        }
+
+        private void btnSaveAs_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|Bitmap Files|*.bmp";
+                saveFileDialog.Title = "名前を付けて保存";
+                saveFileDialog.DefaultExt = "png";
+                saveFileDialog.AddExtension = true;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    ImageFormat format = ImageFormat.Png;
+
+                    switch (Path.GetExtension(filePath).ToLower())
+                    {
+                        case ".jpg":
+                            format = ImageFormat.Jpeg;
+                            break;
+                        case ".bmp":
+                            format = ImageFormat.Bmp;
+                            break;
+                    }
+
+                    _bitmap.Save(filePath, format);
+                }
+            }
         }
     }
 }

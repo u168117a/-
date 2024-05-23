@@ -46,6 +46,7 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
+            btnSaveAs = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -55,6 +56,7 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnSaveAs);
             panel1.Controls.Add(btnSetSize);
             panel1.Controls.Add(txtHeight);
             panel1.Controls.Add(txtWidth);
@@ -73,7 +75,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1346, 102);
+            panel1.Size = new Size(1615, 102);
             panel1.TabIndex = 0;
             // 
             // btnSetSize
@@ -233,14 +235,24 @@
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 102);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1346, 375);
+            panel2.Size = new Size(1615, 375);
             panel2.TabIndex = 2;
+            // 
+            // btnSaveAs
+            // 
+            btnSaveAs.Location = new Point(1385, 27);
+            btnSaveAs.Name = "btnSaveAs";
+            btnSaveAs.Size = new Size(205, 47);
+            btnSaveAs.TabIndex = 16;
+            btnSaveAs.Text = "名前を付けて保存";
+            btnSaveAs.UseVisualStyleBackColor = true;
+            btnSaveAs.Click += btnSaveAs_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1346, 477);
+            ClientSize = new Size(1615, 477);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Name = "Form1";
@@ -273,5 +285,6 @@
         private Button btnSetSize;
         private TextBox txtHeight;
         private TextBox txtWidth;
+        private Button btnSaveAs;
     }
 }
