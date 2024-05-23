@@ -47,6 +47,8 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
+            btnUndo = new Button();
+            btnRedo = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -56,6 +58,8 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnRedo);
+            panel1.Controls.Add(btnUndo);
             panel1.Controls.Add(btnSaveAs);
             panel1.Controls.Add(btnSetSize);
             panel1.Controls.Add(txtHeight);
@@ -75,7 +79,7 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1615, 102);
+            panel1.Size = new Size(1615, 148);
             panel1.TabIndex = 0;
             // 
             // btnSaveAs
@@ -90,7 +94,7 @@
             // 
             // btnSetSize
             // 
-            btnSetSize.Location = new Point(232, 55);
+            btnSetSize.Location = new Point(212, 70);
             btnSetSize.Name = "btnSetSize";
             btnSetSize.Size = new Size(172, 44);
             btnSetSize.TabIndex = 15;
@@ -100,14 +104,14 @@
             // 
             // txtHeight
             // 
-            txtHeight.Location = new Point(110, 58);
+            txtHeight.Location = new Point(110, 73);
             txtHeight.Name = "txtHeight";
             txtHeight.Size = new Size(96, 39);
             txtHeight.TabIndex = 14;
             // 
             // txtWidth
             // 
-            txtWidth.Location = new Point(11, 58);
+            txtWidth.Location = new Point(11, 73);
             txtWidth.Name = "txtWidth";
             txtWidth.Size = new Size(93, 39);
             txtWidth.TabIndex = 13;
@@ -244,10 +248,30 @@
             panel2.BackColor = Color.FromArgb(224, 224, 224);
             panel2.Controls.Add(pic);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 102);
+            panel2.Location = new Point(0, 148);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1615, 375);
+            panel2.Size = new Size(1615, 329);
             panel2.TabIndex = 2;
+            // 
+            // btnUndo
+            // 
+            btnUndo.Location = new Point(415, 92);
+            btnUndo.Name = "btnUndo";
+            btnUndo.Size = new Size(150, 46);
+            btnUndo.TabIndex = 17;
+            btnUndo.Text = "前へ戻る";
+            btnUndo.UseVisualStyleBackColor = true;
+            btnUndo.Click += btnUndo_Click;
+            // 
+            // btnRedo
+            // 
+            btnRedo.Location = new Point(581, 92);
+            btnRedo.Name = "btnRedo";
+            btnRedo.Size = new Size(150, 46);
+            btnRedo.TabIndex = 18;
+            btnRedo.Text = "次に進む";
+            btnRedo.UseVisualStyleBackColor = true;
+            btnRedo.Click += btnRedo_Click;
             // 
             // Form1
             // 
@@ -287,5 +311,7 @@
         private TextBox txtHeight;
         private TextBox txtWidth;
         private Button btnSaveAs;
+        private Button btnUndo;
+        private Button btnRedo;
     }
 }

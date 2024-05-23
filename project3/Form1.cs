@@ -5,6 +5,9 @@ namespace project3
 {
     public partial class Form1 : Form
     {
+        private Stack<Bitmap> undoStack = new Stack<Bitmap>();
+        private Stack<Bitmap> redoStack = new Stack<Bitmap>();
+
         public Form1()
         {
             InitializeComponent();
@@ -52,6 +55,9 @@ namespace project3
         {
             oldLocation = e.Location;
 
+            // 描画前に現在の状態を保存
+            SaveUndoState();
+
             //描画中
             drawFlg = true;
 
@@ -74,6 +80,13 @@ namespace project3
 
             //新しい位置を保存する。
             oldLocation = e.Location;
+        }
+        private void SaveUndoState()
+        {
+            // 現在のビットマップをコピーしてスタックに保存
+            undoStack.Push((Bitmap)_bitmap.Clone());
+            // REDOスタックをクリア
+            redoStack.Clear();
         }
 
         private void pic_MouseUp(object sender, MouseEventArgs e)
@@ -184,6 +197,7 @@ namespace project3
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            SaveUndoState();
             clear();
         }
 
@@ -264,6 +278,26 @@ namespace project3
 
                     _bitmap.Save(filePath, format);
                 }
+            }
+        }
+
+        private void btnUndo_Click(object sender, EventArgs e)
+        {
+            if (undoStack.Count > 0)
+            {
+                redoStack.Push((Bitmap)_bitmap.Clone());
+                _bitmap = undoStack.Pop();
+                pic.Image = _bitmap;
+            }
+        }
+
+        private void btnRedo_Click(object sender, EventArgs e)
+        {
+            if (redoStack.Count > 0)
+            {
+                undoStack.Push((Bitmap)_bitmap.Clone());
+                _bitmap = redoStack.Pop();
+                pic.Image = _bitmap;
             }
         }
     }
