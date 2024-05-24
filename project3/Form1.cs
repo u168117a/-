@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Windows.Forms;
 
 namespace project3
 {
@@ -7,6 +8,7 @@ namespace project3
     {
         private Stack<Bitmap> undoStack = new Stack<Bitmap>();
         private Stack<Bitmap> redoStack = new Stack<Bitmap>();
+        private Bitmap tempBitmap = null; // 描画内容を一時的に保存するためのビットマップ
 
         public Form1()
         {
@@ -62,8 +64,11 @@ namespace project3
             // 描画前に現在の状態を保存
             SaveUndoState();
 
-            //描画中
+            // 描画中
             drawFlg = true;
+
+            // 一時的なビットマップを作成し、現在のビットマップのコピーを保存
+            tempBitmap = (Bitmap)_bitmap.Clone();
 
             pic_MouseMove(sender, e);
         }
@@ -73,7 +78,7 @@ namespace project3
         Point oldLocation = new Point();
         private void pic_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!drawFlg) return;
+           if (!drawFlg) return;
 
             switch (selectedShape)
             {
@@ -88,7 +93,7 @@ namespace project3
                         g.Clear(Color.Transparent); // 以前の描画を消去
                         DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)));
                         pic.Image = _bitmap;
-                    }
+                    }   
                     break;
                 case ShapeType.Star:
                     using (Graphics g = Graphics.FromImage(_bitmap))
@@ -123,6 +128,8 @@ namespace project3
             {
                 using (Graphics g = Graphics.FromImage(_bitmap))
                 {
+                    // 一時的なビットマップの内容を復元
+                    g.DrawImage(tempBitmap, Point.Empty);
                     switch (selectedShape)
                     {
                         case ShapeType.Rectangle:
@@ -146,10 +153,37 @@ namespace project3
         Color _selectedcolor = Color.Black;
 
         //全てのボタンクリック
+        
+        int rrr = 0;
+        int bbb = 0;
+        int ggg = 0;
+        int www = 0;
+
         private void btn_Click(object sender, EventArgs e)
         {
             _selectedcolor = ((Button)sender).BackColor;
             selectedShape = ShapeType.None; // ペンモードに戻す
+
+            #region おまけ
+            if (_selectedcolor == Color.Red)
+            {
+                rrr++;// 赤色のボタンが押されたときの処理をここに追加
+            }
+            else if (_selectedcolor == Color.Blue)
+            {
+                bbb++;// 青色のボタンが押されたときの処理をここに追加
+            }
+            else if (_selectedcolor == Color.Green)
+            {
+                ggg++;// 緑色のボタンが押されたときの処理をここに追加
+            }
+            else
+            {
+                www++;
+            }
+
+            #endregion
+
         }
 
         private void draw(Graphics g, Point xy1, Point xy2)
@@ -253,29 +287,49 @@ namespace project3
 
         private void clear()
         {
+            // _bitmap を白でクリアするのではなく、完全に新しいビットマップを作成する
+            _bitmap = new Bitmap(pic.Width, pic.Height);
             using (Graphics g = Graphics.FromImage(_bitmap))
             {
                 g.FillRectangle(Brushes.White, new Rectangle(0, 0, _bitmap.Width, _bitmap.Height));
             }
             pic.Image = _bitmap;
+
+            rrr = 0;
+            bbb = 0;
+            ggg = 0;
+            www = 0;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            if (rrr == 4 && bbb == 5 && ggg == 6 && www == 0)
             {
-                openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|Bitmap Files|*.bmp|All Files|*.*";
-                openFileDialog.Title = "ファイルを選択してください";
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                _bitmap = new Bitmap("meiro.png");
+                pic.Image = _bitmap;
+                pic.Width = _bitmap.Width;
+                pic.Height = _bitmap.Height;
+            }
+            else 
+            {
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
-                    string filePath = openFileDialog.FileName;
-                    Image img = Bitmap.FromFile(filePath);
-                    _bitmap = new Bitmap(img);
-                    pic.Image = _bitmap;
-                    pic.Width = _bitmap.Width;
-                    pic.Height = _bitmap.Height;
+                    openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|Bitmap Files|*.bmp|All Files|*.*";
+                    openFileDialog.Title = "ファイルを選択してください";
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filePath = openFileDialog.FileName;
+                        Image img = Bitmap.FromFile(filePath);
+                        _bitmap = new Bitmap(img);
+                        pic.Image = _bitmap;
+                        pic.Width = _bitmap.Width;
+                        pic.Height = _bitmap.Height;
+                    }
                 }
             }
+
+
+
 
         }
 
@@ -354,10 +408,7 @@ namespace project3
         #region 図形
         private enum ShapeType { None, Rectangle, Triangle, Circle, Star }
         private ShapeType selectedShape = ShapeType.None;
-
-
-        #endregion
-
+                        
         private void btnRectang_Click(object sender, EventArgs e)
         {
             selectedShape = ShapeType.Rectangle;
@@ -440,6 +491,8 @@ namespace project3
         {
             selectedShape = ShapeType.Star;
         }
+        #endregion
+
 
     }
 }

@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnStar = new Button();
+            btnCircle = new Button();
             btnTriangle = new Button();
             btnRectang = new Button();
             btnRedo = new Button();
@@ -51,8 +53,6 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
-            btnCircle = new Button();
-            btnStar = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -89,6 +89,28 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1615, 148);
             panel1.TabIndex = 0;
+            // 
+            // btnStar
+            // 
+            btnStar.Font = new Font("Yu Gothic UI", 11F);
+            btnStar.Location = new Point(966, 86);
+            btnStar.Name = "btnStar";
+            btnStar.Size = new Size(55, 55);
+            btnStar.TabIndex = 22;
+            btnStar.Text = "★";
+            btnStar.UseVisualStyleBackColor = true;
+            btnStar.Click += btnStar_Click;
+            // 
+            // btnCircle
+            // 
+            btnCircle.Font = new Font("Yu Gothic UI", 11F);
+            btnCircle.Location = new Point(906, 86);
+            btnCircle.Name = "btnCircle";
+            btnCircle.Size = new Size(54, 55);
+            btnCircle.TabIndex = 21;
+            btnCircle.Text = "●";
+            btnCircle.UseVisualStyleBackColor = true;
+            btnCircle.Click += btnCircle_Click;
             // 
             // btnTriangle
             // 
@@ -304,28 +326,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1615, 329);
             panel2.TabIndex = 2;
-            // 
-            // btnCircle
-            // 
-            btnCircle.Font = new Font("Yu Gothic UI", 11F);
-            btnCircle.Location = new Point(906, 86);
-            btnCircle.Name = "btnCircle";
-            btnCircle.Size = new Size(54, 55);
-            btnCircle.TabIndex = 21;
-            btnCircle.Text = "●";
-            btnCircle.UseVisualStyleBackColor = true;
-            btnCircle.Click += btnCircle_Click;
-            // 
-            // btnStar
-            // 
-            btnStar.Font = new Font("Yu Gothic UI", 11F);
-            btnStar.Location = new Point(966, 86);
-            btnStar.Name = "btnStar";
-            btnStar.Size = new Size(59, 52);
-            btnStar.TabIndex = 22;
-            btnStar.Text = "★";
-            btnStar.UseVisualStyleBackColor = true;
-            btnStar.Click += btnStar_Click;
             // 
             // Form1
             // 
