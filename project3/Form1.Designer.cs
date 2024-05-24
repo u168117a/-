@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnTriangle = new Button();
+            btnRectang = new Button();
+            btnRedo = new Button();
+            btnUndo = new Button();
             btnSaveAs = new Button();
             btnSetSize = new Button();
             txtHeight = new TextBox();
@@ -47,8 +51,6 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
-            btnUndo = new Button();
-            btnRedo = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -58,6 +60,8 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnTriangle);
+            panel1.Controls.Add(btnRectang);
             panel1.Controls.Add(btnRedo);
             panel1.Controls.Add(btnUndo);
             panel1.Controls.Add(btnSaveAs);
@@ -81,6 +85,50 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1615, 148);
             panel1.TabIndex = 0;
+            // 
+            // btnTriangle
+            // 
+            btnTriangle.Font = new Font("Yu Gothic UI", 13F);
+            btnTriangle.Location = new Point(851, 86);
+            btnTriangle.Name = "btnTriangle";
+            btnTriangle.Size = new Size(49, 55);
+            btnTriangle.TabIndex = 20;
+            btnTriangle.Text = "▲";
+            btnTriangle.TextAlign = ContentAlignment.TopCenter;
+            btnTriangle.UseVisualStyleBackColor = true;
+            btnTriangle.Click += btnTriangle_Click;
+            // 
+            // btnRectang
+            // 
+            btnRectang.Font = new Font("Yu Gothic UI", 13F);
+            btnRectang.Location = new Point(789, 86);
+            btnRectang.Name = "btnRectang";
+            btnRectang.Size = new Size(56, 55);
+            btnRectang.TabIndex = 9;
+            btnRectang.Text = "■";
+            btnRectang.TextAlign = ContentAlignment.TopCenter;
+            btnRectang.UseVisualStyleBackColor = true;
+            btnRectang.Click += btnRectang_Click;
+            // 
+            // btnRedo
+            // 
+            btnRedo.Location = new Point(581, 92);
+            btnRedo.Name = "btnRedo";
+            btnRedo.Size = new Size(150, 46);
+            btnRedo.TabIndex = 18;
+            btnRedo.Text = "次に進む";
+            btnRedo.UseVisualStyleBackColor = true;
+            btnRedo.Click += btnRedo_Click;
+            // 
+            // btnUndo
+            // 
+            btnUndo.Location = new Point(415, 92);
+            btnUndo.Name = "btnUndo";
+            btnUndo.Size = new Size(150, 46);
+            btnUndo.TabIndex = 17;
+            btnUndo.Text = "前へ戻る";
+            btnUndo.UseVisualStyleBackColor = true;
+            btnUndo.Click += btnUndo_Click;
             // 
             // btnSaveAs
             // 
@@ -253,26 +301,6 @@
             panel2.Size = new Size(1615, 329);
             panel2.TabIndex = 2;
             // 
-            // btnUndo
-            // 
-            btnUndo.Location = new Point(415, 92);
-            btnUndo.Name = "btnUndo";
-            btnUndo.Size = new Size(150, 46);
-            btnUndo.TabIndex = 17;
-            btnUndo.Text = "前へ戻る";
-            btnUndo.UseVisualStyleBackColor = true;
-            btnUndo.Click += btnUndo_Click;
-            // 
-            // btnRedo
-            // 
-            btnRedo.Location = new Point(581, 92);
-            btnRedo.Name = "btnRedo";
-            btnRedo.Size = new Size(150, 46);
-            btnRedo.TabIndex = 18;
-            btnRedo.Text = "次に進む";
-            btnRedo.UseVisualStyleBackColor = true;
-            btnRedo.Click += btnRedo_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -313,5 +341,7 @@
         private Button btnSaveAs;
         private Button btnUndo;
         private Button btnRedo;
+        private Button btnTriangle;
+        private Button btnRectang;
     }
 }

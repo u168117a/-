@@ -29,6 +29,10 @@ namespace project3
             //combboxの始めの太さを設定
             cmbWidth.SelectedIndex = 0;
 
+
+            // イベントハンドラを設定
+            pic.Paint += new PaintEventHandler(pic_Paint);
+
         }
 
         Bitmap _bitmap = null;
@@ -69,17 +73,24 @@ namespace project3
         Point oldLocation = new Point();
         private void pic_MouseMove(object sender, MouseEventArgs e)
         {
-            using (Graphics g = Graphics.FromImage(_bitmap))
+            if (!drawFlg) return;
+
+            switch (selectedShape)
             {
-                if (drawFlg == false) return;
-
-                draw(g, oldLocation, e.Location);
-
+                case ShapeType.Rectangle:
+                case ShapeType.Triangle:
+                    // ガイドライン表示のために再描画
+                    pic.Invalidate();
+                    break;
+                default:
+                    using (Graphics g = Graphics.FromImage(_bitmap))
+                    {
+                        draw(g, oldLocation, e.Location);
+                    }
+                    pic.Image = _bitmap;
+                    oldLocation = e.Location;
+                    break;
             }
-            pic.Image = _bitmap;
-
-            //新しい位置を保存する。
-            oldLocation = e.Location;
         }
         private void SaveUndoState()
         {
@@ -92,6 +103,22 @@ namespace project3
         private void pic_MouseUp(object sender, MouseEventArgs e)
         {
             drawFlg = false;
+            if (selectedShape != ShapeType.None)
+            {
+                using (Graphics g = Graphics.FromImage(_bitmap))
+                {
+                    switch (selectedShape)
+                    {
+                        case ShapeType.Rectangle:
+                            DrawRectangle(g, oldLocation, e.Location);
+                            break;
+                        case ShapeType.Triangle:
+                            DrawTriangle(g, oldLocation, e.Location);
+                            break;
+                    }
+                }
+                pic.Image = _bitmap;
+            }
         }
 
         Color _selectedcolor = Color.Black;
@@ -100,6 +127,7 @@ namespace project3
         private void btn_Click(object sender, EventArgs e)
         {
             _selectedcolor = ((Button)sender).BackColor;
+            selectedShape = ShapeType.None; // ペンモードに戻す
         }
 
         private void draw(Graphics g, Point xy1, Point xy2)
@@ -298,6 +326,62 @@ namespace project3
                 undoStack.Push((Bitmap)_bitmap.Clone());
                 _bitmap = redoStack.Pop();
                 pic.Image = _bitmap;
+            }
+        }
+
+        #region 図形
+        private enum ShapeType { None, Rectangle, Triangle }
+        private ShapeType selectedShape = ShapeType.None;
+
+
+        #endregion
+
+        private void btnRectang_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Rectangle;
+        }
+
+        private void btnTriangle_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Triangle;
+        }
+
+        private void DrawRectangle(Graphics g, Point startPoint, Point endPoint)
+        {
+            int width = endPoint.X - startPoint.X;
+            int height = endPoint.Y - startPoint.Y;
+            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+            using (Pen pen = new Pen(_selectedcolor, penWidth))
+            {
+                g.DrawRectangle(pen, startPoint.X, startPoint.Y, width, height);
+            }
+        }
+
+        private void DrawTriangle(Graphics g, Point startPoint, Point endPoint)
+        {
+            Point topPoint = new Point((startPoint.X + endPoint.X) / 2, startPoint.Y);
+            Point leftPoint = new Point(startPoint.X, endPoint.Y);
+            Point rightPoint = new Point(endPoint.X, endPoint.Y);
+            Point[] points = { topPoint, leftPoint, rightPoint };
+            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+            using (Pen pen = new Pen(_selectedcolor, penWidth))
+            {
+                g.DrawPolygon(pen, points);
+            }
+        }
+
+        private void pic_Paint(object sender, PaintEventArgs e)
+        {
+            if (!drawFlg) return;
+
+            switch (selectedShape)
+            {
+                case ShapeType.Rectangle:
+                    DrawRectangle(e.Graphics, oldLocation, pic.PointToClient(MousePosition));
+                    break;
+                case ShapeType.Triangle:
+                    DrawTriangle(e.Graphics, oldLocation, pic.PointToClient(MousePosition));
+                    break;
             }
         }
     }
