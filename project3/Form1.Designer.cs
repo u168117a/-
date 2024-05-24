@@ -51,6 +51,8 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
+            btnCircle = new Button();
+            btnStar = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -60,6 +62,8 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnStar);
+            panel1.Controls.Add(btnCircle);
             panel1.Controls.Add(btnTriangle);
             panel1.Controls.Add(btnRectang);
             panel1.Controls.Add(btnRedo);
@@ -301,6 +305,28 @@
             panel2.Size = new Size(1615, 329);
             panel2.TabIndex = 2;
             // 
+            // btnCircle
+            // 
+            btnCircle.Font = new Font("Yu Gothic UI", 11F);
+            btnCircle.Location = new Point(906, 86);
+            btnCircle.Name = "btnCircle";
+            btnCircle.Size = new Size(54, 55);
+            btnCircle.TabIndex = 21;
+            btnCircle.Text = "●";
+            btnCircle.UseVisualStyleBackColor = true;
+            btnCircle.Click += btnCircle_Click;
+            // 
+            // btnStar
+            // 
+            btnStar.Font = new Font("Yu Gothic UI", 11F);
+            btnStar.Location = new Point(966, 86);
+            btnStar.Name = "btnStar";
+            btnStar.Size = new Size(59, 52);
+            btnStar.TabIndex = 22;
+            btnStar.Text = "★";
+            btnStar.UseVisualStyleBackColor = true;
+            btnStar.Click += btnStar_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -343,5 +369,7 @@
         private Button btnRedo;
         private Button btnTriangle;
         private Button btnRectang;
+        private Button btnStar;
+        private Button btnCircle;
     }
 }

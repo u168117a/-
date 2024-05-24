@@ -82,6 +82,22 @@ namespace project3
                     // ガイドライン表示のために再描画
                     pic.Invalidate();
                     break;
+                case ShapeType.Circle:
+                    using (Graphics g = Graphics.FromImage(_bitmap))
+                    {
+                        g.Clear(Color.Transparent); // 以前の描画を消去
+                        DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)));
+                        pic.Image = _bitmap;
+                    }
+                    break;
+                case ShapeType.Star:
+                    using (Graphics g = Graphics.FromImage(_bitmap))
+                    {
+                        g.Clear(Color.Transparent); // 以前の描画を消去
+                        DrawStar(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 2, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 4, 5);
+                        pic.Image = _bitmap;
+                    }
+                    break;
                 default:
                     using (Graphics g = Graphics.FromImage(_bitmap))
                     {
@@ -114,6 +130,12 @@ namespace project3
                             break;
                         case ShapeType.Triangle:
                             DrawTriangle(g, oldLocation, e.Location);
+                            break;
+                        case ShapeType.Circle:
+                            DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)));
+                            break;
+                        case ShapeType.Star:
+                            DrawStar(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 2, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 4, 5);
                             break;
                     }
                 }
@@ -330,7 +352,7 @@ namespace project3
         }
 
         #region 図形
-        private enum ShapeType { None, Rectangle, Triangle }
+        private enum ShapeType { None, Rectangle, Triangle, Circle, Star }
         private ShapeType selectedShape = ShapeType.None;
 
 
@@ -370,6 +392,30 @@ namespace project3
             }
         }
 
+        private void DrawCircle(Graphics g, Point center, int radius)
+        {
+            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString()); // コンボボックスからペンの太さを取得
+            g.DrawEllipse(new Pen(_selectedcolor, penWidth), center.X - radius, center.Y - radius, radius * 2, radius * 2);
+        }
+
+        private void DrawStar(Graphics g, Point center, int outerRadius, int innerRadius, int points)
+        {
+            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString()); // コンボボックスからペンの太さを取得
+            PointF[] starPoints = new PointF[2 * points];
+
+            double angle = Math.PI / points;
+
+            for (int i = 0; i < 2 * points; i++)
+            {
+                double r = (i % 2 == 0) ? outerRadius : innerRadius;
+                double theta = i * angle - Math.PI / 2; // 上方向を向くように角度を調整
+                starPoints[i] = new PointF((float)(center.X + r * Math.Cos(theta)), (float)(center.Y + r * Math.Sin(theta)));
+            }
+
+            g.DrawPolygon(new Pen(_selectedcolor, penWidth), starPoints);
+        }
+
+
         private void pic_Paint(object sender, PaintEventArgs e)
         {
             if (!drawFlg) return;
@@ -384,5 +430,16 @@ namespace project3
                     break;
             }
         }
+
+        private void btnCircle_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Circle;
+        }
+
+        private void btnStar_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Star;
+        }
+
     }
 }
