@@ -34,6 +34,7 @@ namespace project3
 
             // イベントハンドラを設定
             pic.Paint += new PaintEventHandler(pic_Paint);
+            pic.MouseClick += new MouseEventHandler(pic_MouseClick);
 
         }
 
@@ -406,7 +407,7 @@ namespace project3
         }
 
         #region 図形
-        private enum ShapeType { None, Rectangle, Triangle, Circle, Star }
+        private enum ShapeType { None, Rectangle, Triangle, Circle, Star ,Fill}
         private ShapeType selectedShape = ShapeType.None;
 
         private void btnRectang_Click(object sender, EventArgs e)
@@ -523,7 +524,7 @@ namespace project3
             pic.Image = _bitmap;
         }
 
-       
+
 
         private void btnFlipHorizontal_Click(object sender, EventArgs e)
         {
@@ -534,6 +535,59 @@ namespace project3
         {
             FlipImage(false);
         }
+        #endregion
+
+
+        #region 塗りつぶし
+        private void Fill(Point pt, Color targetColor, Color replacementColor)
+        {
+            if (targetColor.ToArgb() == replacementColor.ToArgb()) return;
+
+            bool[,] visited = new bool[_bitmap.Width, _bitmap.Height];
+            Queue<Point> pixels = new Queue<Point>();
+            pixels.Enqueue(pt);
+
+            while (pixels.Count > 0)
+            {
+                Point current = pixels.Dequeue();
+                if (current.X < 0 || current.X >= _bitmap.Width || current.Y < 0 || current.Y >= _bitmap.Height)
+                    continue;
+
+                if (visited[current.X, current.Y])
+                    continue;
+
+                visited[current.X, current.Y] = true;
+
+                if (_bitmap.GetPixel(current.X, current.Y) == targetColor)
+                {
+                    _bitmap.SetPixel(current.X, current.Y, replacementColor);
+
+                    pixels.Enqueue(new Point(current.X + 1, current.Y));
+                    pixels.Enqueue(new Point(current.X - 1, current.Y));
+                    pixels.Enqueue(new Point(current.X, current.Y + 1));
+                    pixels.Enqueue(new Point(current.X, current.Y - 1));
+                }
+            }
+            pic.Image = _bitmap;
+        }
+                
+        private void btnFill_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Fill; // 塗りつぶしモードに設定
+        }
+
+        private void pic_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (selectedShape == ShapeType.Fill)
+            {
+                Color targetColor = _bitmap.GetPixel(e.X, e.Y);
+                if (targetColor.ToArgb() != _selectedcolor.ToArgb()) // 塗りつぶすべき対象色が選択された色でない場合
+                {
+                    Fill(e.Location, targetColor, _selectedcolor);
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -54,6 +54,7 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
+            btnFill = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -63,6 +64,7 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnFill);
             panel1.Controls.Add(btnFlipVertical);
             panel1.Controls.Add(btnFlipHorizontal);
             panel1.Controls.Add(btnStar);
@@ -94,7 +96,7 @@
             // 
             // btnFlipVertical
             // 
-            btnFlipVertical.Location = new Point(1220, 92);
+            btnFlipVertical.Location = new Point(1339, 92);
             btnFlipVertical.Name = "btnFlipVertical";
             btnFlipVertical.Size = new Size(150, 46);
             btnFlipVertical.TabIndex = 25;
@@ -104,7 +106,7 @@
             // 
             // btnFlipHorizontal
             // 
-            btnFlipHorizontal.Location = new Point(1064, 92);
+            btnFlipHorizontal.Location = new Point(1183, 92);
             btnFlipHorizontal.Name = "btnFlipHorizontal";
             btnFlipHorizontal.Size = new Size(150, 46);
             btnFlipHorizontal.TabIndex = 24;
@@ -338,6 +340,16 @@
             panel2.Size = new Size(1615, 329);
             panel2.TabIndex = 2;
             // 
+            // btnFill
+            // 
+            btnFill.Location = new Point(1027, 92);
+            btnFill.Name = "btnFill";
+            btnFill.Size = new Size(150, 46);
+            btnFill.TabIndex = 26;
+            btnFill.Text = "塗りつぶし";
+            btnFill.UseVisualStyleBackColor = true;
+            btnFill.Click += btnFill_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
@@ -383,5 +395,6 @@
         private Button btnCircle;
         private Button btnFlipVertical;
         private Button btnFlipHorizontal;
+        private Button btnFill;
     }
 }
