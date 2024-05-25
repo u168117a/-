@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnFlipVertical = new Button();
+            btnFlipHorizontal = new Button();
             btnStar = new Button();
             btnCircle = new Button();
             btnTriangle = new Button();
@@ -41,7 +43,6 @@
             txtWidth = new TextBox();
             btnLoad = new Button();
             button1 = new Button();
-            btnSave = new Button();
             cmbWidth = new ComboBox();
             btn8 = new Button();
             btn7 = new Button();
@@ -62,6 +63,8 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnFlipVertical);
+            panel1.Controls.Add(btnFlipHorizontal);
             panel1.Controls.Add(btnStar);
             panel1.Controls.Add(btnCircle);
             panel1.Controls.Add(btnTriangle);
@@ -74,7 +77,6 @@
             panel1.Controls.Add(txtWidth);
             panel1.Controls.Add(btnLoad);
             panel1.Controls.Add(button1);
-            panel1.Controls.Add(btnSave);
             panel1.Controls.Add(cmbWidth);
             panel1.Controls.Add(btn8);
             panel1.Controls.Add(btn7);
@@ -89,6 +91,26 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1615, 148);
             panel1.TabIndex = 0;
+            // 
+            // btnFlipVertical
+            // 
+            btnFlipVertical.Location = new Point(1220, 92);
+            btnFlipVertical.Name = "btnFlipVertical";
+            btnFlipVertical.Size = new Size(150, 46);
+            btnFlipVertical.TabIndex = 25;
+            btnFlipVertical.Text = "垂直反転";
+            btnFlipVertical.UseVisualStyleBackColor = true;
+            btnFlipVertical.Click += btnFlipVertical_Click;
+            // 
+            // btnFlipHorizontal
+            // 
+            btnFlipHorizontal.Location = new Point(1064, 92);
+            btnFlipHorizontal.Name = "btnFlipHorizontal";
+            btnFlipHorizontal.Size = new Size(150, 46);
+            btnFlipHorizontal.TabIndex = 24;
+            btnFlipHorizontal.Text = "水平反転";
+            btnFlipHorizontal.UseVisualStyleBackColor = true;
+            btnFlipHorizontal.Click += btnFlipHorizontal_Click;
             // 
             // btnStar
             // 
@@ -158,7 +180,7 @@
             // 
             // btnSaveAs
             // 
-            btnSaveAs.Location = new Point(1191, 26);
+            btnSaveAs.Location = new Point(1397, 11);
             btnSaveAs.Name = "btnSaveAs";
             btnSaveAs.Size = new Size(205, 52);
             btnSaveAs.TabIndex = 16;
@@ -192,7 +214,7 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1045, 25);
+            btnLoad.Location = new Point(1251, 10);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(140, 53);
             btnLoad.TabIndex = 12;
@@ -209,17 +231,6 @@
             button1.Text = "クリア";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click_1;
-            // 
-            // btnSave
-            // 
-            btnSave.Location = new Point(1191, 26);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(150, 51);
-            btnSave.TabIndex = 10;
-            btnSave.Text = "保存";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Visible = false;
-            btnSave.Click += button2_Click;
             // 
             // cmbWidth
             // 
@@ -357,7 +368,6 @@
         private Button btn2;
         private Button btn3;
         private ComboBox cmbWidth;
-        private Button btnSave;
         private Button button1;
         private Button btnLoad;
         private Panel panel2;
@@ -371,5 +381,7 @@
         private Button btnRectang;
         private Button btnStar;
         private Button btnCircle;
+        private Button btnFlipVertical;
+        private Button btnFlipHorizontal;
     }
 }

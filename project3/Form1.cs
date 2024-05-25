@@ -78,7 +78,7 @@ namespace project3
         Point oldLocation = new Point();
         private void pic_MouseMove(object sender, MouseEventArgs e)
         {
-           if (!drawFlg) return;
+            if (!drawFlg) return;
 
             switch (selectedShape)
             {
@@ -93,7 +93,7 @@ namespace project3
                         g.Clear(Color.Transparent); // 以前の描画を消去
                         DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)));
                         pic.Image = _bitmap;
-                    }   
+                    }
                     break;
                 case ShapeType.Star:
                     using (Graphics g = Graphics.FromImage(_bitmap))
@@ -153,7 +153,7 @@ namespace project3
         Color _selectedcolor = Color.Black;
 
         //全てのボタンクリック
-        
+
         int rrr = 0;
         int bbb = 0;
         int ggg = 0;
@@ -310,7 +310,7 @@ namespace project3
                 pic.Width = _bitmap.Width;
                 pic.Height = _bitmap.Height;
             }
-            else 
+            else
             {
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
@@ -408,7 +408,7 @@ namespace project3
         #region 図形
         private enum ShapeType { None, Rectangle, Triangle, Circle, Star }
         private ShapeType selectedShape = ShapeType.None;
-                        
+
         private void btnRectang_Click(object sender, EventArgs e)
         {
             selectedShape = ShapeType.Rectangle;
@@ -494,5 +494,46 @@ namespace project3
         #endregion
 
 
+
+        #region 反転・回転
+
+        private void FlipImage(bool horizontal)
+        {
+            // 新しいビットマップを作成し、反転した画像を描画する
+            Bitmap flippedBitmap = new Bitmap(_bitmap.Width, _bitmap.Height);
+            using (Graphics g = Graphics.FromImage(flippedBitmap))
+            {
+                if (horizontal)
+                {
+                    // 水平方向に反転
+                    g.ScaleTransform(-1, 1);
+                    g.TranslateTransform(-_bitmap.Width, 0);
+                }
+                else
+                {
+                    // 垂直方向に反転
+                    g.ScaleTransform(1, -1);
+                    g.TranslateTransform(0, -_bitmap.Height);
+                }
+                // 反転した画像を描画
+                g.DrawImage(_bitmap, new Point(0, 0));
+            }
+            // ビットマップを更新し、PictureBoxに表示
+            _bitmap = flippedBitmap;
+            pic.Image = _bitmap;
+        }
+
+       
+
+        private void btnFlipHorizontal_Click(object sender, EventArgs e)
+        {
+            FlipImage(true);
+        }
+
+        private void btnFlipVertical_Click(object sender, EventArgs e)
+        {
+            FlipImage(false);
+        }
+        #endregion
     }
 }
