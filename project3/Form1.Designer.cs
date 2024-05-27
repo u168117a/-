@@ -104,22 +104,26 @@
             // 
             // btnMerge
             // 
-            btnMerge.Location = new Point(1205, 126);
+            btnMerge.BackColor = Color.FromArgb(255, 128, 0);
+            btnMerge.Location = new Point(1212, 126);
             btnMerge.Name = "btnMerge";
-            btnMerge.Size = new Size(73, 46);
+            btnMerge.Size = new Size(111, 46);
             btnMerge.TabIndex = 31;
-            btnMerge.Text = "合成";
-            btnMerge.UseVisualStyleBackColor = true;
+            btnMerge.Text = "合わせる";
+            btnMerge.UseVisualStyleBackColor = false;
             btnMerge.Click += btnMerge_Click_1;
             // 
             // btnText
             // 
+            btnText.BackColor = Color.Red;
+            btnText.Font = new Font("Yu Gothic UI", 10F);
+            btnText.ForeColor = Color.White;
             btnText.Location = new Point(804, 123);
             btnText.Name = "btnText";
             btnText.Size = new Size(150, 46);
             btnText.TabIndex = 30;
-            btnText.Text = "TEXT";
-            btnText.UseVisualStyleBackColor = true;
+            btnText.Text = "文字";
+            btnText.UseVisualStyleBackColor = false;
             btnText.Click += btnText_Click;
             // 
             // txtInput
@@ -134,39 +138,42 @@
             chkFill.AutoSize = true;
             chkFill.Location = new Point(658, 133);
             chkFill.Name = "chkFill";
-            chkFill.Size = new Size(142, 36);
+            chkFill.Size = new Size(138, 36);
             chkFill.TabIndex = 28;
-            chkFill.Text = "塗りつぶし";
+            chkFill.Text = "ぬりつぶし";
             chkFill.UseVisualStyleBackColor = true;
             // 
             // btnPrint
             // 
-            btnPrint.Location = new Point(1095, 29);
+            btnPrint.BackColor = Color.FromArgb(192, 192, 255);
+            btnPrint.Location = new Point(1071, 29);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(150, 46);
             btnPrint.TabIndex = 27;
-            btnPrint.Text = "印刷";
-            btnPrint.UseVisualStyleBackColor = true;
+            btnPrint.Text = "紙にする";
+            btnPrint.UseVisualStyleBackColor = false;
             btnPrint.Click += btnPrint_Click;
             // 
             // btnFlipVertical
             // 
+            btnFlipVertical.BackColor = Color.FromArgb(192, 255, 255);
             btnFlipVertical.Location = new Point(1440, 126);
             btnFlipVertical.Name = "btnFlipVertical";
             btnFlipVertical.Size = new Size(150, 46);
             btnFlipVertical.TabIndex = 25;
-            btnFlipVertical.Text = "垂直反転";
-            btnFlipVertical.UseVisualStyleBackColor = true;
+            btnFlipVertical.Text = "かがみ２";
+            btnFlipVertical.UseVisualStyleBackColor = false;
             btnFlipVertical.Click += btnFlipVertical_Click;
             // 
             // btnFlipHorizontal
             // 
-            btnFlipHorizontal.Location = new Point(1284, 126);
+            btnFlipHorizontal.BackColor = Color.FromArgb(192, 255, 255);
+            btnFlipHorizontal.Location = new Point(1337, 126);
             btnFlipHorizontal.Name = "btnFlipHorizontal";
-            btnFlipHorizontal.Size = new Size(150, 46);
+            btnFlipHorizontal.Size = new Size(97, 46);
             btnFlipHorizontal.TabIndex = 24;
-            btnFlipHorizontal.Text = "水平反転";
-            btnFlipHorizontal.UseVisualStyleBackColor = true;
+            btnFlipHorizontal.Text = "かがみ";
+            btnFlipHorizontal.UseVisualStyleBackColor = false;
             btnFlipHorizontal.Click += btnFlipHorizontal_Click;
             // 
             // btnStar
@@ -221,7 +228,7 @@
             btnRedo.Name = "btnRedo";
             btnRedo.Size = new Size(150, 46);
             btnRedo.TabIndex = 18;
-            btnRedo.Text = "次に進む";
+            btnRedo.Text = "すすむ";
             btnRedo.UseVisualStyleBackColor = true;
             btnRedo.Click += btnRedo_Click;
             // 
@@ -231,7 +238,7 @@
             btnUndo.Name = "btnUndo";
             btnUndo.Size = new Size(150, 46);
             btnUndo.TabIndex = 17;
-            btnUndo.Text = "前へ戻る";
+            btnUndo.Text = "もどる";
             btnUndo.UseVisualStyleBackColor = true;
             btnUndo.Click += btnUndo_Click;
             // 
@@ -241,7 +248,7 @@
             btnSaveAs.Name = "btnSaveAs";
             btnSaveAs.Size = new Size(205, 52);
             btnSaveAs.TabIndex = 16;
-            btnSaveAs.Text = "名前を付けて保存";
+            btnSaveAs.Text = "名前を付けて残す";
             btnSaveAs.UseVisualStyleBackColor = true;
             btnSaveAs.Click += btnSaveAs_Click;
             // 
@@ -251,7 +258,7 @@
             btnSetSize.Name = "btnSetSize";
             btnSetSize.Size = new Size(172, 44);
             btnSetSize.TabIndex = 15;
-            btnSetSize.Text = "サイズ変更";
+            btnSetSize.Text = "サイズ変える";
             btnSetSize.UseVisualStyleBackColor = true;
             btnSetSize.Click += btnSetSize_Click;
             // 
@@ -271,11 +278,11 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1251, 25);
+            btnLoad.Location = new Point(1227, 26);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(140, 53);
+            btnLoad.Size = new Size(164, 53);
             btnLoad.TabIndex = 12;
-            btnLoad.Text = "読み込み";
+            btnLoad.Text = "残したデータ";
             btnLoad.UseVisualStyleBackColor = true;
             btnLoad.Click += btnLoad_Click;
             // 
@@ -283,9 +290,9 @@
             // 
             button1.Location = new Point(906, 22);
             button1.Name = "button1";
-            button1.Size = new Size(79, 55);
+            button1.Size = new Size(127, 55);
             button1.TabIndex = 11;
-            button1.Text = "クリア";
+            button1.Text = "全部消す";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click_1;
             // 
