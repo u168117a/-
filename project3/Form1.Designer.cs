@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnText = new Button();
+            txtInput = new TextBox();
+            chkFill = new CheckBox();
+            btnPrint = new Button();
             btnFlipVertical = new Button();
             btnFlipHorizontal = new Button();
             btnStar = new Button();
@@ -54,7 +58,6 @@
             btn1 = new Button();
             pic = new PictureBox();
             panel2 = new Panel();
-            btnFill = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic).BeginInit();
             panel2.SuspendLayout();
@@ -64,7 +67,10 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(btnFill);
+            panel1.Controls.Add(btnText);
+            panel1.Controls.Add(txtInput);
+            panel1.Controls.Add(chkFill);
+            panel1.Controls.Add(btnPrint);
             panel1.Controls.Add(btnFlipVertical);
             panel1.Controls.Add(btnFlipHorizontal);
             panel1.Controls.Add(btnStar);
@@ -91,12 +97,49 @@
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1615, 148);
+            panel1.Size = new Size(1615, 180);
             panel1.TabIndex = 0;
+            // 
+            // btnText
+            // 
+            btnText.Location = new Point(804, 123);
+            btnText.Name = "btnText";
+            btnText.Size = new Size(150, 46);
+            btnText.TabIndex = 30;
+            btnText.Text = "TEXT";
+            btnText.UseVisualStyleBackColor = true;
+            btnText.Click += btnText_Click;
+            // 
+            // txtInput
+            // 
+            txtInput.Location = new Point(960, 127);
+            txtInput.Name = "txtInput";
+            txtInput.Size = new Size(200, 39);
+            txtInput.TabIndex = 29;
+            // 
+            // chkFill
+            // 
+            chkFill.AutoSize = true;
+            chkFill.Location = new Point(658, 133);
+            chkFill.Name = "chkFill";
+            chkFill.Size = new Size(142, 36);
+            chkFill.TabIndex = 28;
+            chkFill.Text = "塗りつぶし";
+            chkFill.UseVisualStyleBackColor = true;
+            // 
+            // btnPrint
+            // 
+            btnPrint.Location = new Point(1095, 29);
+            btnPrint.Name = "btnPrint";
+            btnPrint.Size = new Size(150, 46);
+            btnPrint.TabIndex = 27;
+            btnPrint.Text = "印刷";
+            btnPrint.UseVisualStyleBackColor = true;
+            btnPrint.Click += btnPrint_Click;
             // 
             // btnFlipVertical
             // 
-            btnFlipVertical.Location = new Point(1339, 92);
+            btnFlipVertical.Location = new Point(1440, 126);
             btnFlipVertical.Name = "btnFlipVertical";
             btnFlipVertical.Size = new Size(150, 46);
             btnFlipVertical.TabIndex = 25;
@@ -106,7 +149,7 @@
             // 
             // btnFlipHorizontal
             // 
-            btnFlipHorizontal.Location = new Point(1183, 92);
+            btnFlipHorizontal.Location = new Point(1284, 126);
             btnFlipHorizontal.Name = "btnFlipHorizontal";
             btnFlipHorizontal.Size = new Size(150, 46);
             btnFlipHorizontal.TabIndex = 24;
@@ -117,7 +160,7 @@
             // btnStar
             // 
             btnStar.Font = new Font("Yu Gothic UI", 11F);
-            btnStar.Location = new Point(966, 86);
+            btnStar.Location = new Point(597, 117);
             btnStar.Name = "btnStar";
             btnStar.Size = new Size(55, 55);
             btnStar.TabIndex = 22;
@@ -128,7 +171,7 @@
             // btnCircle
             // 
             btnCircle.Font = new Font("Yu Gothic UI", 11F);
-            btnCircle.Location = new Point(906, 86);
+            btnCircle.Location = new Point(537, 117);
             btnCircle.Name = "btnCircle";
             btnCircle.Size = new Size(54, 55);
             btnCircle.TabIndex = 21;
@@ -139,7 +182,7 @@
             // btnTriangle
             // 
             btnTriangle.Font = new Font("Yu Gothic UI", 13F);
-            btnTriangle.Location = new Point(851, 86);
+            btnTriangle.Location = new Point(482, 117);
             btnTriangle.Name = "btnTriangle";
             btnTriangle.Size = new Size(49, 55);
             btnTriangle.TabIndex = 20;
@@ -151,7 +194,7 @@
             // btnRectang
             // 
             btnRectang.Font = new Font("Yu Gothic UI", 13F);
-            btnRectang.Location = new Point(789, 86);
+            btnRectang.Location = new Point(420, 117);
             btnRectang.Name = "btnRectang";
             btnRectang.Size = new Size(56, 55);
             btnRectang.TabIndex = 9;
@@ -162,7 +205,7 @@
             // 
             // btnRedo
             // 
-            btnRedo.Location = new Point(581, 92);
+            btnRedo.Location = new Point(177, 127);
             btnRedo.Name = "btnRedo";
             btnRedo.Size = new Size(150, 46);
             btnRedo.TabIndex = 18;
@@ -172,7 +215,7 @@
             // 
             // btnUndo
             // 
-            btnUndo.Location = new Point(415, 92);
+            btnUndo.Location = new Point(11, 127);
             btnUndo.Name = "btnUndo";
             btnUndo.Size = new Size(150, 46);
             btnUndo.TabIndex = 17;
@@ -182,7 +225,7 @@
             // 
             // btnSaveAs
             // 
-            btnSaveAs.Location = new Point(1397, 11);
+            btnSaveAs.Location = new Point(1397, 26);
             btnSaveAs.Name = "btnSaveAs";
             btnSaveAs.Size = new Size(205, 52);
             btnSaveAs.TabIndex = 16;
@@ -192,7 +235,7 @@
             // 
             // btnSetSize
             // 
-            btnSetSize.Location = new Point(212, 70);
+            btnSetSize.Location = new Point(214, 66);
             btnSetSize.Name = "btnSetSize";
             btnSetSize.Size = new Size(172, 44);
             btnSetSize.TabIndex = 15;
@@ -202,21 +245,21 @@
             // 
             // txtHeight
             // 
-            txtHeight.Location = new Point(110, 73);
+            txtHeight.Location = new Point(112, 69);
             txtHeight.Name = "txtHeight";
             txtHeight.Size = new Size(96, 39);
             txtHeight.TabIndex = 14;
             // 
             // txtWidth
             // 
-            txtWidth.Location = new Point(11, 73);
+            txtWidth.Location = new Point(13, 69);
             txtWidth.Name = "txtWidth";
             txtWidth.Size = new Size(93, 39);
             txtWidth.TabIndex = 13;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1251, 10);
+            btnLoad.Location = new Point(1251, 25);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(140, 53);
             btnLoad.TabIndex = 12;
@@ -335,20 +378,10 @@
             panel2.BackColor = Color.FromArgb(224, 224, 224);
             panel2.Controls.Add(pic);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 148);
+            panel2.Location = new Point(0, 180);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1615, 329);
+            panel2.Size = new Size(1615, 297);
             panel2.TabIndex = 2;
-            // 
-            // btnFill
-            // 
-            btnFill.Location = new Point(1027, 92);
-            btnFill.Name = "btnFill";
-            btnFill.Size = new Size(150, 46);
-            btnFill.TabIndex = 26;
-            btnFill.Text = "塗りつぶし";
-            btnFill.UseVisualStyleBackColor = true;
-            btnFill.Click += btnFill_Click;
             // 
             // Form1
             // 
@@ -395,6 +428,9 @@
         private Button btnCircle;
         private Button btnFlipVertical;
         private Button btnFlipHorizontal;
-        private Button btnFill;
+        private Button btnPrint;
+        private CheckBox chkFill;
+        private Button btnText;
+        private TextBox txtInput;
     }
 }

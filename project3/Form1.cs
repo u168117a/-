@@ -1,11 +1,14 @@
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.Windows.Forms;
+
 
 namespace project3
 {
     public partial class Form1 : Form
     {
+        private PrintDocument printDocument = new PrintDocument();
         private Stack<Bitmap> undoStack = new Stack<Bitmap>();
         private Stack<Bitmap> redoStack = new Stack<Bitmap>();
         private Bitmap tempBitmap = null; // 描画内容を一時的に保存するためのビットマップ
@@ -13,6 +16,9 @@ namespace project3
         public Form1()
         {
             InitializeComponent();
+            printDocument.PrintPage += new PrintPageEventHandler(printDocument_PrintPage);
+            pic.Paint += new PaintEventHandler(pic_PaintBorder);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -71,7 +77,10 @@ namespace project3
             // 一時的なビットマップを作成し、現在のビットマップのコピーを保存
             tempBitmap = (Bitmap)_bitmap.Clone();
 
-            pic_MouseMove(sender, e);
+            //pic_MouseMove(sender, e);
+
+            // テキストの描画開始位置を設定
+            textLocation = e.Location;
         }
 
         bool drawFlg = false;   //true : 描画中   
@@ -101,6 +110,27 @@ namespace project3
                     {
                         g.Clear(Color.Transparent); // 以前の描画を消去
                         DrawStar(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 2, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 4, 5);
+                        pic.Image = _bitmap;
+                    }
+                    break;
+                case ShapeType.Text:
+                    using (Graphics g = Graphics.FromImage(_bitmap))
+                    {
+                        // 一度ビットマップをクリアして以前の描画内容を消去
+                        g.Clear(Color.Transparent);
+
+                        // ドラッグ中の位置からフォントサイズを計算
+                        float distance = Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y));
+                        int fontSize = (int)(distance / 5); // 5はフォントサイズの係数（調整が必要）
+
+                        // フォントサイズが0より小さい場合は1を使用する
+                        fontSize = Math.Max(fontSize, 1);
+
+                        // テキストを描画
+                        DrawText(g, oldLocation, txtInput.Text, new Font("Arial", fontSize));
+
+                        textFont = new Font("Arial", fontSize);
+
                         pic.Image = _bitmap;
                     }
                     break;
@@ -134,16 +164,19 @@ namespace project3
                     switch (selectedShape)
                     {
                         case ShapeType.Rectangle:
-                            DrawRectangle(g, oldLocation, e.Location);
+                            DrawRectangle(g, oldLocation, e.Location, chkFill.Checked);
                             break;
                         case ShapeType.Triangle:
-                            DrawTriangle(g, oldLocation, e.Location);
+                            DrawTriangle(g, oldLocation, e.Location, chkFill.Checked);
                             break;
                         case ShapeType.Circle:
-                            DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)));
+                            DrawCircle(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)), chkFill.Checked);
                             break;
                         case ShapeType.Star:
-                            DrawStar(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 2, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 4, 5);
+                            DrawStar(g, oldLocation, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 2, Math.Max(Math.Abs(e.Location.X - oldLocation.X), Math.Abs(e.Location.Y - oldLocation.Y)) / 4, 5, chkFill.Checked);
+                            break;
+                        case ShapeType.Text:
+                            DrawText(g, textLocation, txtInput.Text, textFont);
                             break;
                     }
                 }
@@ -342,6 +375,8 @@ namespace project3
 
         private void btnSetSize_Click(object sender, EventArgs e)
         {
+            SaveUndoState();
+
             int widht = Int32.Parse(txtWidth.Text);
             int height = Int32.Parse(txtHeight.Text);
 
@@ -407,7 +442,7 @@ namespace project3
         }
 
         #region 図形
-        private enum ShapeType { None, Rectangle, Triangle, Circle, Star ,Fill}
+        private enum ShapeType { None, Rectangle, Triangle, Circle, Star, Fill, Text }
         private ShapeType selectedShape = ShapeType.None;
 
         private void btnRectang_Click(object sender, EventArgs e)
@@ -420,52 +455,120 @@ namespace project3
             selectedShape = ShapeType.Triangle;
         }
 
-        private void DrawRectangle(Graphics g, Point startPoint, Point endPoint)
+        private void DrawRectangle(Graphics g, Point p1, Point p2, bool fill = false)
         {
-            int width = endPoint.X - startPoint.X;
-            int height = endPoint.Y - startPoint.Y;
-            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
-            using (Pen pen = new Pen(_selectedcolor, penWidth))
+            Rectangle rect = new Rectangle(
+                Math.Min(p1.X, p2.X),
+                Math.Min(p1.Y, p2.Y),
+                Math.Abs(p1.X - p2.X),
+                Math.Abs(p1.Y - p2.Y));
+
+            if (fill)
             {
-                g.DrawRectangle(pen, startPoint.X, startPoint.Y, width, height);
+                Brush brush = new SolidBrush(_selectedcolor);
+                g.FillRectangle(brush, rect);
+            }
+            else
+            {
+                int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+                Pen pen = new Pen(_selectedcolor,penWidth);
+                g.DrawRectangle(pen, rect);
             }
         }
 
-        private void DrawTriangle(Graphics g, Point startPoint, Point endPoint)
+        private void DrawTriangle(Graphics g, Point p1, Point p2, bool fill = false)
         {
-            Point topPoint = new Point((startPoint.X + endPoint.X) / 2, startPoint.Y);
-            Point leftPoint = new Point(startPoint.X, endPoint.Y);
-            Point rightPoint = new Point(endPoint.X, endPoint.Y);
+            Point topPoint = new Point((p1.X + p2.X) / 2, p1.Y);
+            Point leftPoint = new Point(p1.X, p2.Y);
+            Point rightPoint = new Point(p2.X, p2.Y);
             Point[] points = { topPoint, leftPoint, rightPoint };
-            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
-            using (Pen pen = new Pen(_selectedcolor, penWidth))
+
+            if (fill)
             {
+                Brush brush = new SolidBrush(_selectedcolor);
+                g.FillPolygon(brush, points);
+            }
+            else
+            {
+                int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+                using (Pen pen = new Pen(_selectedcolor, penWidth))
+                {
+                    g.DrawPolygon(pen, points);
+                }
+            }
+        }
+
+
+        private void DrawCircle(Graphics g, Point center, int radius, bool fill = false)
+        {
+            Rectangle rect = new Rectangle(center.X - radius, center.Y - radius, radius * 2, radius * 2);
+
+            if (fill)
+            {
+                Brush brush = new SolidBrush(_selectedcolor);
+                g.FillEllipse(brush, rect);
+            }
+            else
+            {
+                int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+                Pen pen = new Pen(_selectedcolor,penWidth);
+                g.DrawEllipse(pen, rect);
+            }
+        }
+
+
+        private void DrawStar(Graphics g, Point center, int outerRadius, int innerRadius, int numPoints, bool fill = false)
+        {
+            double angleStep = Math.PI / numPoints;
+            PointF[] points = new PointF[numPoints * 2];
+
+            for (int i = 0; i < numPoints * 2; i++)
+            {
+                double angle = i * angleStep - Math.PI / 2;
+                double radius = (i % 2 == 0) ? outerRadius : innerRadius;
+                points[i] = new PointF(
+                    center.X + (float)(Math.Cos(angle) * radius),
+                    center.Y + (float)(Math.Sin(angle) * radius));
+            }
+
+            if (fill)
+            {
+                Brush brush = new SolidBrush(_selectedcolor);
+                g.FillPolygon(brush, points);
+            }
+            else
+            {
+                int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
+                Pen pen = new Pen(_selectedcolor,penWidth);
                 g.DrawPolygon(pen, points);
             }
         }
 
-        private void DrawCircle(Graphics g, Point center, int radius)
+        // テキストの描画位置
+        private Point textLocation = Point.Empty;
+        // テキストのフォント
+        private Font textFont = new Font("Arial", 12);
+
+        private void DrawText(Graphics g, Point location, string text, Font font)
         {
-            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString()); // コンボボックスからペンの太さを取得
-            g.DrawEllipse(new Pen(_selectedcolor, penWidth), center.X - radius, center.Y - radius, radius * 2, radius * 2);
-        }
-
-        private void DrawStar(Graphics g, Point center, int outerRadius, int innerRadius, int points)
-        {
-            int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString()); // コンボボックスからペンの太さを取得
-            PointF[] starPoints = new PointF[2 * points];
-
-            double angle = Math.PI / points;
-
-            for (int i = 0; i < 2 * points; i++)
+            using (Brush brush = new SolidBrush(_selectedcolor))
             {
-                double r = (i % 2 == 0) ? outerRadius : innerRadius;
-                double theta = i * angle - Math.PI / 2; // 上方向を向くように角度を調整
-                starPoints[i] = new PointF((float)(center.X + r * Math.Cos(theta)), (float)(center.Y + r * Math.Sin(theta)));
+                g.DrawString(text, font, brush, location);
             }
-
-            g.DrawPolygon(new Pen(_selectedcolor, penWidth), starPoints);
         }
+
+        private void UpdateTextLocationAndSize(Point newLocation, int width, int height)
+        {
+            // 新しい位置とサイズを計算
+            int x = Math.Min(textLocation.X, newLocation.X);
+            int y = Math.Min(textLocation.Y, newLocation.Y);
+            textLocation = new Point(x, y);
+            // テキストのフォントサイズを調整
+            float fontSize = Math.Max(1, Math.Min(width / 2, height));
+            textFont = new Font(textFont.FontFamily, fontSize);
+        }
+
+
 
 
         private void pic_Paint(object sender, PaintEventArgs e)
@@ -491,6 +594,11 @@ namespace project3
         private void btnStar_Click(object sender, EventArgs e)
         {
             selectedShape = ShapeType.Star;
+        }
+
+                private void btnText_Click(object sender, EventArgs e)
+        {
+            selectedShape = ShapeType.Text;
         }
         #endregion
 
@@ -539,55 +647,73 @@ namespace project3
 
 
         #region 塗りつぶし
-        private void Fill(Point pt, Color targetColor, Color replacementColor)
-        {
-            if (targetColor.ToArgb() == replacementColor.ToArgb()) return;
 
-            bool[,] visited = new bool[_bitmap.Width, _bitmap.Height];
-            Queue<Point> pixels = new Queue<Point>();
-            pixels.Enqueue(pt);
 
-            while (pixels.Count > 0)
-            {
-                Point current = pixels.Dequeue();
-                if (current.X < 0 || current.X >= _bitmap.Width || current.Y < 0 || current.Y >= _bitmap.Height)
-                    continue;
 
-                if (visited[current.X, current.Y])
-                    continue;
-
-                visited[current.X, current.Y] = true;
-
-                if (_bitmap.GetPixel(current.X, current.Y) == targetColor)
-                {
-                    _bitmap.SetPixel(current.X, current.Y, replacementColor);
-
-                    pixels.Enqueue(new Point(current.X + 1, current.Y));
-                    pixels.Enqueue(new Point(current.X - 1, current.Y));
-                    pixels.Enqueue(new Point(current.X, current.Y + 1));
-                    pixels.Enqueue(new Point(current.X, current.Y - 1));
-                }
-            }
-            pic.Image = _bitmap;
-        }
-                
-        private void btnFill_Click(object sender, EventArgs e)
-        {
-            selectedShape = ShapeType.Fill; // 塗りつぶしモードに設定
-        }
 
         private void pic_MouseClick(object sender, MouseEventArgs e)
         {
-            if (selectedShape == ShapeType.Fill)
+            ;
+        }
+
+        #endregion
+
+        private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            if (_bitmap != null)
             {
-                Color targetColor = _bitmap.GetPixel(e.X, e.Y);
-                if (targetColor.ToArgb() != _selectedcolor.ToArgb()) // 塗りつぶすべき対象色が選択された色でない場合
+                // 画像のサイズを取得
+                int originalWidth = _bitmap.Width;
+                int originalHeight = _bitmap.Height;
+
+                // 印刷可能な領域のサイズを取得
+                int printableWidth = e.MarginBounds.Width;
+                int printableHeight = e.MarginBounds.Height;
+
+                // 画像のアスペクト比を保持しながらサイズを調整
+                float scale = Math.Min((float)printableWidth / originalWidth, (float)printableHeight / originalHeight);
+                int width = (int)(originalWidth * scale);
+                int height = (int)(originalHeight * scale);
+
+                // 画像を中央に配置
+                int x = e.MarginBounds.Left + (printableWidth - width) / 2;
+                int y = e.MarginBounds.Top + (printableHeight - height) / 2;
+
+                // 調整されたサイズで画像を描画
+                e.Graphics.DrawImage(_bitmap, x, y, width, height);
+
+                using (Pen borderPen = new Pen(Color.Black, 1))
                 {
-                    Fill(e.Location, targetColor, _selectedcolor);
+                    e.Graphics.DrawRectangle(borderPen, x, y, width, height);
                 }
             }
         }
 
-        #endregion
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            using (PrintDialog printDialog = new PrintDialog())
+            {
+                printDialog.Document = printDocument;
+                if (printDialog.ShowDialog() == DialogResult.OK)
+                {
+                    printDocument.Print();
+                }
+            }
+        }
+
+        private void pic_PaintBorder(object sender, PaintEventArgs e)
+        {
+            // PictureBox のサイズを取得
+            int width = pic.Width;
+            int height = pic.Height;
+
+            // 黒いペンを作成
+            Pen blackPen = new Pen(Color.Black);
+
+            // PictureBox の境界を描画
+            e.Graphics.DrawRectangle(blackPen, 0, 0, width - 1, height - 1);
+        }
+
+
     }
 }
