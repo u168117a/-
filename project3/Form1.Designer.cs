@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnMerge = new Button();
             btnText = new Button();
             txtInput = new TextBox();
             chkFill = new CheckBox();
@@ -67,6 +68,7 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 255, 192);
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(btnMerge);
             panel1.Controls.Add(btnText);
             panel1.Controls.Add(txtInput);
             panel1.Controls.Add(chkFill);
@@ -99,6 +101,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1615, 180);
             panel1.TabIndex = 0;
+            // 
+            // btnMerge
+            // 
+            btnMerge.Location = new Point(1205, 126);
+            btnMerge.Name = "btnMerge";
+            btnMerge.Size = new Size(73, 46);
+            btnMerge.TabIndex = 31;
+            btnMerge.Text = "合成";
+            btnMerge.UseVisualStyleBackColor = true;
+            btnMerge.Click += btnMerge_Click_1;
             // 
             // btnText
             // 
@@ -432,5 +444,6 @@
         private CheckBox chkFill;
         private Button btnText;
         private TextBox txtInput;
+        private Button btnMerge;
     }
 }

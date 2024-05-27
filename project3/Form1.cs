@@ -471,7 +471,7 @@ namespace project3
             else
             {
                 int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
-                Pen pen = new Pen(_selectedcolor,penWidth);
+                Pen pen = new Pen(_selectedcolor, penWidth);
                 g.DrawRectangle(pen, rect);
             }
         }
@@ -511,7 +511,7 @@ namespace project3
             else
             {
                 int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
-                Pen pen = new Pen(_selectedcolor,penWidth);
+                Pen pen = new Pen(_selectedcolor, penWidth);
                 g.DrawEllipse(pen, rect);
             }
         }
@@ -539,7 +539,7 @@ namespace project3
             else
             {
                 int penWidth = Int32.Parse(cmbWidth.SelectedItem.ToString());
-                Pen pen = new Pen(_selectedcolor,penWidth);
+                Pen pen = new Pen(_selectedcolor, penWidth);
                 g.DrawPolygon(pen, points);
             }
         }
@@ -596,7 +596,7 @@ namespace project3
             selectedShape = ShapeType.Star;
         }
 
-                private void btnText_Click(object sender, EventArgs e)
+        private void btnText_Click(object sender, EventArgs e)
         {
             selectedShape = ShapeType.Text;
         }
@@ -645,18 +645,10 @@ namespace project3
         }
         #endregion
 
-
-        #region 塗りつぶし
-
-
-
-
         private void pic_MouseClick(object sender, MouseEventArgs e)
         {
             ;
         }
-
-        #endregion
 
         private void printDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
@@ -714,6 +706,62 @@ namespace project3
             e.Graphics.DrawRectangle(blackPen, 0, 0, width - 1, height - 1);
         }
 
+        private Bitmap LoadImageFromFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                return new Bitmap(filePath);
+            }
+            else
+            {
+                MessageBox.Show("ファイルが見つかりません。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
 
+        private void MergeImages(Bitmap backgroundImage, Bitmap overlayImage)
+        {
+            using (Graphics g = Graphics.FromImage(backgroundImage))
+            {
+                // オーバーレイ画像を背景画像の中央に配置する
+                int x = (backgroundImage.Width - overlayImage.Width) / 2;
+                int y = (backgroundImage.Height - overlayImage.Height) / 2;
+                g.DrawImage(overlayImage, new Point(x, y));
+            }
+
+            // 背景画像にオーバーレイを合成した画像をPictureBoxに表示する
+            pic.Image = backgroundImage;
+        }
+
+ 
+        private void btnMerge_Click_1(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "PNG Files|*.png|JPEG Files|*.jpg|Bitmap Files|*.bmp|All Files|*.*";
+                openFileDialog.Title = "画像ファイルを選択してください";
+                openFileDialog.Multiselect = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (openFileDialog.FileNames.Length == 2)
+                    {
+                        // 2つの画像を読み込む
+                        Bitmap backgroundImage = LoadImageFromFile(openFileDialog.FileNames[0]);
+                        Bitmap overlayImage = LoadImageFromFile(openFileDialog.FileNames[1]);
+
+                        if (backgroundImage != null && overlayImage != null)
+                        {
+                            // 画像を合成して表示する
+                            MergeImages(backgroundImage, overlayImage);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("2つの画像を選択してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
     }
 }
